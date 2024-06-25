@@ -9,7 +9,7 @@ local teleportBack = false
 local tpWaitTime = 10
 local originalCFrame = localHrp.CFrame
 
-local Window = OLib:MakeWindow({Name = "Vampire Life killer", HidePremium = false, IntroText = "VL Killer", SaveConfig = false, ConfigFolder = "VLKiller"})
+local Window = OLib:MakeWindow({Name = "Vampire Life killer", HidePremium = false, IntroText = "VL Killer", SaveConfig = true, ConfigFolder = "VLKiller"})
 
 local Tab = Window:MakeTab({
     Name = "Main",
