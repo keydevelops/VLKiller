@@ -33,6 +33,7 @@ local function updatePlayerNames()
     end
 end
 
+
 playerDropdown = Tab:AddDropdown({
     Name = "Players",
     Default = "Select player",
@@ -63,6 +64,19 @@ STab:AddToggle({
             })
         end
     end    
+})
+
+STab:AddSlider({
+	Name = "TP wait time",
+	Min = 0,
+	Max = 20,
+	Default = 10,
+	Color = Color3.fromRGB(255,127,80),
+	Increment = 1,
+	ValueName = "Secs.",
+	Callback = function(Value)
+		tpWaitTime = Value
+	end    
 })
 
 updatePlayerNames()
