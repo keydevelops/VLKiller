@@ -33,15 +33,6 @@ local function updatePlayerNames()
     end
 end
 
-playerDropdown = Tab:AddDropdown({
-    Name = "Players",
-    Default = "Select player",
-    Options = playerNames,
-    Callback = function(PlayerUsername)
-        playerName = PlayerUsername
-    end
-})
-
 local inputPlayerName
 Tab:AddTextbox({
     Name = "Player Name",
