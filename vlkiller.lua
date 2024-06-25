@@ -6,7 +6,7 @@ local playerName = nil
 local playerNames = {}
 local playerDropdown
 local teleportBack = false
-local tpWaitTime = 6
+local tpWaitTime = 10
 local originalCFrame = localHrp.CFrame
 
 local Window = OLib:MakeWindow({Name = "Vampire Life killer", HidePremium = false, IntroText = "VL Killer", SaveConfig = false, ConfigFolder = "VLKiller"})
