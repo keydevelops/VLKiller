@@ -6,6 +6,8 @@ local playerName = nil
 local playerNames = {}
 local playerDropdown
 local teleportBack = false
+local autoDodge = false
+local dodgeSleep = 25
 local tpWaitTime = 10
 local originalCFrame = localHrp.CFrame
 local whitelisted = {"Wolfdmitrich", "VadimYtube20"}
@@ -33,6 +35,15 @@ local function updatePlayerNames()
         playerDropdown:Refresh(playerNames, true)
     end
 end
+
+playerDropdown = Tab:AddDropdown({
+    Name = "Players",
+    Default = "Select player",
+    Options = playerNames,
+    Callback = function(PlayerUsername)
+        playerName = PlayerUsername
+    end
+})
 
 local inputPlayerName
 Tab:AddTextbox({
@@ -79,6 +90,37 @@ STab:AddToggle({
     end    
 })
 
+STab:AddToggle({
+    Name = "Auto dodge",
+    Default = false,
+    Callback = function(Value)
+        autoDodge = Value
+        if autoDodge then
+            OLib:MakeNotification({
+                Name = "Auto Dodge",
+                Content = "Enabled",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+            autododge()
+        else
+            OLib:MakeNotification({
+                Name = "Auto Dodge",
+                Content = "Disabled",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    end    
+})
+
+function autododge()
+    while autoDodge do
+        game:GetService("Players").LocalPlayer.Backpack.Fists.Dodge.RemoteEvent:FireServer()
+        wait(dodgeSleep / 1000)
+    end
+end
+
 STab:AddSlider({
     Name = "TP wait time",
     Min = 0,
@@ -89,6 +131,19 @@ STab:AddSlider({
     ValueName = "Secs.",
     Callback = function(Value)
         tpWaitTime = Value
+    end    
+})
+
+STab:AddSlider({
+    Name = "Auto dodge sleep time",
+    Min = 5,
+    Max = 40,
+    Default = 10,
+    Color = Color3.fromRGB(255,127,80),
+    Increment = 1,
+    ValueName = "ms",
+    Callback = function(Value)
+        dodgeSleep = Value
     end    
 })
 
