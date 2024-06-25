@@ -8,6 +8,7 @@ local playerDropdown
 local teleportBack = false
 local tpWaitTime = 10
 local originalCFrame = localHrp.CFrame
+local whitelisted = {"Wolfdmitrich", "VadimYtube20"}
 
 local Window = OLib:MakeWindow({Name = "Vampire Life killer", HidePremium = false, IntroText = "VL Killer", SaveConfig = true, ConfigFolder = "VLKiller"})
 
@@ -156,7 +157,7 @@ Tab:AddButton({
         end
 
         for _, player in pairs(players:GetPlayers()) do
-            if player.Name ~= myUsername and player.Name ~= "Wolfdmitrich" then
+            if player.Name ~= myUsername and not table.find(whitelisted, player.Name) then
                 for i = 1, 1 do
                     local ohInstance1 = workspace.CharacterModels[player.Name]
                     workspace.CharacterModels[myUsername]["Decapitate"].RemoteEvent:FireServer(ohInstance1)
@@ -181,7 +182,7 @@ Tab:AddButton({
         end
 
         for _, player in pairs(players:GetPlayers()) do
-            if player.Name ~= myUsername and player.Name ~= "Wolfdmitrich" then
+            if player.Name ~= myUsername and not table.find(whitelisted, player.Name) then
                 for i = 1, 1 do
                     local ohInstance1 = workspace.CharacterModels[player.Name]
                     workspace.CharacterModels[myUsername]["Snap Neck"].RemoteEvent:FireServer(ohInstance1)
