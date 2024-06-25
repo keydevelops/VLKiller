@@ -102,7 +102,7 @@ Tab:AddButton({
                 end
             end
             if teleportBack then
-                wait(5)
+                wait(6)
                 localHrp.CFrame = originalCFrame
             end
         else
@@ -130,7 +130,7 @@ Tab:AddButton({
                 end
             end
             if teleportBack then
-                wait(5)
+                wait(6)
                 localHrp.CFrame = originalCFrame
             end
         else
@@ -164,7 +164,7 @@ Tab:AddButton({
             end
         end
         if teleportBack then
-            wait(5)
+            wait(6)
             localHrp.CFrame = originalCFrame
         end
     end
