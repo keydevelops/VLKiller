@@ -33,13 +33,35 @@ local function updatePlayerNames()
     end
 end
 
-
 playerDropdown = Tab:AddDropdown({
     Name = "Players",
     Default = "Select player",
     Options = playerNames,
     Callback = function(PlayerUsername)
         playerName = PlayerUsername
+    end
+})
+
+local inputPlayerName
+Tab:AddTextbox({
+    Name = "Player Name",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        inputPlayerName = Value
+        -- Attempt to find a player with a matching or partially matching name
+        for _, player in pairs(players:GetPlayers()) do
+            if string.find(string.lower(player.Name), string.lower(inputPlayerName)) then
+                playerName = player.Name
+                OLib:MakeNotification({
+                    Name = "Player Found",
+                    Content = "Player " .. playerName .. " selected.",
+                    Image = "rbxassetid://4483345998",
+                    Time = 5
+                })
+                break
+            end
+        end
     end
 })
 
@@ -67,134 +89,76 @@ STab:AddToggle({
 })
 
 STab:AddSlider({
-	Name = "TP wait time",
-	Min = 0,
-	Max = 20,
-	Default = 10,
-	Color = Color3.fromRGB(255,127,80),
-	Increment = 1,
-	ValueName = "Secs.",
-	Callback = function(Value)
-		tpWaitTime = Value
-	end    
+    Name = "TP wait time",
+    Min = 0,
+    Max = 20,
+    Default = 10,
+    Color = Color3.fromRGB(255,127,80),
+    Increment = 1,
+    ValueName = "Secs.",
+    Callback = function(Value)
+        tpWaitTime = Value
+    end    
 })
 
 updatePlayerNames()
 
+local function performAction(action)
+    if playerName and playerName ~= "Select player" and playerName ~= players.LocalPlayer.Name then
+        if teleportBack then
+            originalCFrame = localHrp.CFrame
+        end
+        for i = 1, 1 do
+            local ohInstance1 = workspace.CharacterModels:FindFirstChild(playerName)
+            if ohInstance1 then
+                workspace.CharacterModels[players.LocalPlayer.Name][action].RemoteEvent:FireServer(ohInstance1)
+            end
+        end
+        if teleportBack then
+            wait(tpWaitTime)
+            localHrp.CFrame = originalCFrame
+        end
+    else
+        OLib:MakeNotification({
+            Name = "Invalid player!",
+            Content = "Please, select a valid player!",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+    end
+end
+
 Tab:AddButton({
     Name = "Pain Infliction",
-    Callback = function(Value)
-        if playerName and playerName ~= "Select player" and playerName ~= players.LocalPlayer.Name then
-            for i = 1, 20 do
-                local ohString1 = "Start"
-                local ohInstance2 = workspace.CharacterModels:FindFirstChild(playerName)
-                if ohInstance2 then
-                    workspace.CharacterModels[players.LocalPlayer.Name]["Pain Infliction"].ClickEvent:FireServer(ohString1, ohInstance2)
-                end
-            end
-            if teleportBack then
-                wait(tpWaitTime)
-                localHrp.CFrame = originalCFrame
-            end
-        else
-            OLib:MakeNotification({
-                Name = "Invalid player!",
-                Content = "Please, select a valid player!",
-                Image = "rbxassetid://4483345998",
-                Time = 5
-            })
-        end
+    Callback = function()
+        performAction("Pain Infliction")
     end
 })
 
 Tab:AddButton({
     Name = "Rip Heart",
-    Callback = function(Value)
-        if playerName and playerName ~= "Select player" and playerName ~= players.LocalPlayer.Name then
-            if teleportBack then
-                originalCFrame = localHrp.CFrame
-            end
-            for i = 1, 1 do
-                local ohInstance1 = workspace.CharacterModels:FindFirstChild(playerName)
-                if ohInstance1 then
-                    workspace.CharacterModels[players.LocalPlayer.Name]["Rip Heart"].RemoteEvent:FireServer(ohInstance1)
-                end
-            end
-            if teleportBack then
-                wait(tpWaitTime)
-                localHrp.CFrame = originalCFrame
-            end
-        else
-            OLib:MakeNotification({
-                Name = "Invalid player!",
-                Content = "Please, select a valid player!",
-                Image = "rbxassetid://4483345998",
-                Time = 5
-            })
-        end
+    Callback = function()
+        performAction("Rip Heart")
     end
 })
 
 Tab:AddButton({
     Name = "Decapitate",
-    Callback = function(Value)
-        if playerName and playerName ~= "Select player" and playerName ~= players.LocalPlayer.Name then
-            if teleportBack then
-                originalCFrame = localHrp.CFrame
-            end
-            for i = 1, 1 do
-                local ohInstance1 = workspace.CharacterModels:FindFirstChild(playerName)
-                if ohInstance1 then
-                    workspace.CharacterModels[players.LocalPlayer.Name]["Decapitate"].RemoteEvent:FireServer(ohInstance1)
-                end
-            end
-            if teleportBack then
-                wait(tpWaitTime)
-                localHrp.CFrame = originalCFrame
-            end
-        else
-            OLib:MakeNotification({
-                Name = "Invalid player!",
-                Content = "Please, select a valid player!",
-                Image = "rbxassetid://4483345998",
-                Time = 5
-            })
-        end
+    Callback = function()
+        performAction("Decapitate")
     end
 })
 
 Tab:AddButton({
     Name = "Snap neck",
-    Callback = function(Value)
-        if playerName and playerName ~= "Select player" and playerName ~= players.LocalPlayer.Name then
-            if teleportBack then
-                originalCFrame = localHrp.CFrame
-            end
-            for i = 1, 1 do
-                local ohInstance1 = workspace.CharacterModels:FindFirstChild(playerName)
-                if ohInstance1 then
-                    workspace.CharacterModels[players.LocalPlayer.Name]["Snap Neck"].RemoteEvent:FireServer(ohInstance1)
-                end
-            end
-            if teleportBack then
-                wait(tpWaitTime)
-                localHrp.CFrame = originalCFrame
-            end
-        else
-            OLib:MakeNotification({
-                Name = "Invalid player!",
-                Content = "Please, select a valid player!",
-                Image = "rbxassetid://4483345998",
-                Time = 5
-            })
-        end
+    Callback = function()
+        performAction("Snap Neck")
     end
 })
 
-
 Tab:AddButton({
     Name = "Decapitate all",
-    Callback = function(Value)
+    Callback = function()
         local myUsername = players.LocalPlayer.Name
 
         if teleportBack then
@@ -205,7 +169,6 @@ Tab:AddButton({
             if player.Name ~= myUsername and player.Name ~= "Wolfdmitrich" then
                 for i = 1, 1 do
                     local ohInstance1 = workspace.CharacterModels[player.Name]
-
                     workspace.CharacterModels[myUsername]["Decapitate"].RemoteEvent:FireServer(ohInstance1)
                 end
                 print("Killed " .. player.Name)
@@ -220,7 +183,7 @@ Tab:AddButton({
 
 Tab:AddButton({
     Name = "Snap neck all",
-    Callback = function(Value)
+    Callback = function()
         local myUsername = players.LocalPlayer.Name
 
         if teleportBack then
@@ -231,7 +194,6 @@ Tab:AddButton({
             if player.Name ~= myUsername and player.Name ~= "Wolfdmitrich" then
                 for i = 1, 1 do
                     local ohInstance1 = workspace.CharacterModels[player.Name]
-
                     workspace.CharacterModels[myUsername]["Snap Neck"].RemoteEvent:FireServer(ohInstance1)
                 end
                 print("Killed " .. player.Name)
