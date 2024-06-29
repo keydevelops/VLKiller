@@ -14,12 +14,6 @@ local whitelisted = {"Wolfdmitrich", "VadimYtube20"}
 local AuthKey = "VLK_F4B119EA514FF95678EF9D69F883D"
 local AuthkeyInput = nil
 
-if table.find(whitelisted, players.LocalPlayer.Name) then
-    init_vlk()
-else
-    init_auth()
-end
-
 function init_auth()
     local AuthWindow = AOLib:MakeWindow({Name = "VLK Auth System", HidePremium = false, IntroText = "VLK Auth", SaveConfig = true, ConfigFolder = "VLAuth"})
     local AuthTab = AuthWindow:MakeTab({
@@ -789,4 +783,11 @@ function init_vlk()
     players.PlayerRemoving:Connect(function(player)
         updatePlayerNames()
     end)
+end
+
+
+if table.find(whitelisted, players.LocalPlayer.Name) then
+    init_vlk()
+else
+    init_auth()
 end
